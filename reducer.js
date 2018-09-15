@@ -1,96 +1,96 @@
+// Imports
 
-// Import
+// Actions
 
-// Action
+const START_TIMER = "START_TIMER";
+const RESTART_TIMER = "RESTART_TIMER";
+const ADD_SECOND = "ADD_SECOND";
 
-const START_TIMER = 'START_TIMER';
-const RESTART_TIMER = 'RESTART_TIMER';
-const ADD_SECOND = 'ADD_SECOND';
+// Action Creators
 
 function startTimer() {
-    return {
-        type: START_TIMER
-    };
+  return {
+    type: START_TIMER
+  };
 }
 
 function restartTimer() {
-    return {
-        type: RESTART_TIMER
-    };
+  return {
+    type: RESTART_TIMER
+  };
 }
 
 function addSecond() {
-    return {
-        type: ADD_SECOND
-    };
+  return {
+    type: ADD_SECOND
+  };
 }
 
 // Reducer
 
-const TIME_DURATION = 1500;
+const TIMER_DURATION = 1500;
 
 const initialState = {
-    isPlaying: false,
-    elapsedTime: 0,
-    timeDuration: TIME_DURATION
-}
+  isPlaying: false,
+  elapsedTime: 0,
+  timerDuration: TIMER_DURATION
+};
 
 function reducer(state = initialState, action) {
-    switch (action.type) {
-        case START_TIMER:
-            return applyStartTimer(state);
-            break;
-        case RESTART_TIMER:
-            return applyRestartTimer(state);
-            break;
-        case ADD_SECOND:
-            return applyAddSecond(state);
-            break;
-        default:
-            break;
-    }
+  switch (action.type) {
+    case START_TIMER:
+      return applyStartTimer(state, action);
+    case RESTART_TIMER:
+      return applyRestartTimer(state, action);
+    case ADD_SECOND:
+      return applyAddSecond(state, action);
+    default:
+      return state;
+  }
 }
 
-//Reducer Functions
+// Reducer Functions
 
-function applyStartTimer(state) {
+function applyStartTimer(state, action) {
+  return {
+    ...state,
+    isPlaying: true,
+    elapsedTime: 0
+  };
+}
+
+function applyRestartTimer(state, action) {
+  return {
+    ...state,
+    isPlaying: false,
+    elapsedTime: 0
+  };
+}
+
+function applyAddSecond(state, action) {
+  const { elapsedTime } = state;
+  if (elapsedTime < TIMER_DURATION) {
     return {
-        ...state,
-        isPlaying: true
-    }
-}
-
-function applyRestartTimer(state) {
+      ...state,
+      elapsedTime: elapsedTime + 1
+    };
+  } else {
     return {
-        ...state,
-        isPlaying: false,
-        elapsedTime: 0
-    }
+      ...state,
+      isPlaying: false
+    };
+  }
 }
 
-function applyAddSecond(state) {
-
-    if(startTimer.elapsedTime < TIME_DURATION) {
-        return {
-            ...state,
-            elapsedTime: state.elapsedTime + 1
-        }
-    } else {
-        return {
-            ...state,
-            isPlaying: false
-        }
-    }
-}
-
-// Export Action Creators
+// Exports
 
 const actionCreators = {
-    startTimer,
-    restartTimer,
-    addSecond
-}
+  startTimer,
+  restartTimer,
+  addSecond
+};
+export { actionCreators };
 
-// Export Reducer
+// Default
 
 export default reducer;
